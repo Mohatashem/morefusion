@@ -62,18 +62,18 @@ bool is_detected_mask_too_small(const cv::Mat& mask2) {
   int mask_size = cv::countNonZero(mask2_denoised);
   int bbox_size = bbox_height * bbox_width;
   float mask_ratio_in_bbox = static_cast<float>(mask_size) / static_cast<float>(bbox_size);
-  // if (mask_size < (40 * 40) ||
-  //     bbox_size < (80 * 80) ||
-  //     bbox_height < 60 ||
-  //     bbox_width < 60) {
-  //   return true;
-  // }
-  if (mask_size < (80 * 80) ||
-      bbox_size < (120 * 120) ||
-      bbox_height < 100 ||
-      bbox_width < 100) {
+  if (mask_size < (40 * 40) ||
+      bbox_size < (80 * 80) ||
+      bbox_height < 60 ||
+      bbox_width < 60) {
     return true;
   }
+  // if (mask_size < (80 * 80) ||
+  //     bbox_size < (120 * 120) ||
+  //     bbox_height < 100 ||
+  //     bbox_width < 100) {
+  //   return true;
+  // }
   return false;
 }
 
@@ -216,24 +216,24 @@ void track_instance_id(
   }
 
   // Manipulate target
-  std::set<int> instance_ids_active = morefusion_panda_ycb_video::utils::unique<int>(*target);
-  for (int ins_id : instance_ids_active) {
-    if (ins_id < 0) {
-      continue;
-    }
-    cv::Mat mask = (*target) == ins_id;
-    std::vector<std::vector<cv::Point> > contours;
-    std::vector<cv::Vec4i> hierarchy;
-    cv::findContours(
-      mask, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-    for (size_t j = 0; j < contours.size(); j++) {
-      if (cv::contourArea(contours[j]) < (20 * 20)) {
-        cv::drawContours(*target, contours, j, /*color=*/-2, /*thickness=*/CV_FILLED);
-      } else {
-        cv::drawContours(*target, contours, j, /*color=*/-2, /*thickness=*/10);
-      }
-    }
-  }
+  // std::set<int> instance_ids_active = morefusion_panda_ycb_video::utils::unique<int>(*target);
+  // for (int ins_id : instance_ids_active) {
+  //   if (ins_id < 0) {
+  //     continue;
+  //   }
+  //   cv::Mat mask = (*target) == ins_id;
+  //   std::vector<std::vector<cv::Point> > contours;
+  //   std::vector<cv::Vec4i> hierarchy;
+  //   cv::findContours(
+  //     mask, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+  //   for (size_t j = 0; j < contours.size(); j++) {
+  //     if (cv::contourArea(contours[j]) < (20 * 20)) {
+  //       cv::drawContours(*target, contours, j, /*color=*/-2, /*thickness=*/CV_FILLED);
+  //     } else {
+  //       cv::drawContours(*target, contours, j, /*color=*/-2, /*thickness=*/10);
+  //     }
+  //   }
+  // }
 
   // Manipulate reference
   for (int ins_id : morefusion_panda_ycb_video::utils::unique<int>(reference)) {
